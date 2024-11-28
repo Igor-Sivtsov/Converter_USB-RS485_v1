@@ -35,7 +35,9 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
-/* USER CODE END PV */
+  const uint8_t serial_number[] __attribute__((section(".sn_section"))) = "FORWARD_DYN_00-000-000-00-000";
+
+  /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
   * @{
@@ -287,7 +289,8 @@ uint8_t * USBD_FS_SerialStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
    * ID */
   Get_SerialNum();
   /* USER CODE BEGIN USBD_FS_SerialStrDescriptor */
-
+  *length = sizeof(serial_number);
+  USBD_GetString((uint8_t*)serial_number, USBD_StringSerial, length);
   /* USER CODE END USBD_FS_SerialStrDescriptor */
   return (uint8_t *) USBD_StringSerial;
 }
