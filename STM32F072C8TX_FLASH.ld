@@ -37,7 +37,8 @@ _Min_Stack_Size = 0x400 ;	/* required amount of stack */
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 16K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 64K
+  FLASH  (rx)     : ORIGIN = 0x8000000,    LENGTH = 63K
+  SN     (r)      : ORIGIN = 0x800fc00,    LENGTH = 1K
 }
 
 /* Sections */
@@ -76,6 +77,14 @@ SECTIONS
     *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
     . = ALIGN(4);
   } >FLASH
+
+  .sn_section :
+  {
+	. = ALIGN(4);
+	__sn_section_start__ = .;
+	KEEP(*(.sn_section*))
+	__sn_section_end__ = .;
+  } >SN
 
   .ARM.extab   : {
     . = ALIGN(4);
