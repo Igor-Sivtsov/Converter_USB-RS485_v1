@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "protection.h"
+#include "uart.h"
+//#include "uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,10 +93,12 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  FlashReadoutProtection();
+  //FlashReadoutProtection();
 
   LED_GPIO_Port->BSRR = LED_Pin;
   USB_CTRL_GPIO_Port->BSRR = USB_CTRL_Pin << 16;
+
+  start_uart_resive();
   /* USER CODE END 2 */
 
   /* Infinite loop */

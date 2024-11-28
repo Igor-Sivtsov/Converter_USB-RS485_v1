@@ -23,7 +23,7 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-//#include "uart.h"
+#include "uart.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -265,6 +265,8 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 
   LED_GPIO_Port->BSRR = LED_Pin << 16;
   cnt_led = 50;
+
+  uart_transmit(Buf, (size_t)*Len);
 
   return (USBD_OK);
   /* USER CODE END 6 */

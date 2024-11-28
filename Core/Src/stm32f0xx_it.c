@@ -39,12 +39,15 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define BUF_SIZE	1000
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
+uint8_t buf[BUF_SIZE] = {0,};
+size_t 	cnt = 0;
 uint8_t cnt_led = 0;
+uint32_t temp;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -153,7 +156,23 @@ void SysTick_Handler(void)
 void USART3_4_IRQHandler(void)
 {
   /* USER CODE BEGIN USART3_4_IRQn 0 */
+	if(USART3->ISR & (USART_ISR_PE | USART_ISR_FE | USART_ISR_NE | USART_ISR_ORE))
+		temp = USART2->RDR;
+	else
+	{
+		if(USART3->ISR & USART_ISR_RXNE)
+		{
+			buf[cnt] = USART3->RDR;
+			cnt++;
+		}
 
+		if(USART3->ISR & USART_ISR_IDLE)
+		{
+			CDC_Transmit_FS(buf, cnt);
+			memset(&buf, 0, cnt);
+			cnt = 0;
+		}
+	}
   /* USER CODE END USART3_4_IRQn 0 */
   HAL_UART_IRQHandler(&huart3);
   /* USER CODE BEGIN USART3_4_IRQn 1 */
